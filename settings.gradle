@@ -1,0 +1,4 @@
+include ':fetch2core'
+include ':fetch2okhttp'
+include ':app'
+rootProject.name = "BookStore"
