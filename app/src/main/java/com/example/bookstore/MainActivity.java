@@ -49,7 +49,7 @@ import java.util.Map;
 import kotlin.Pair;
 
 
-public class MainActivity extends AppCompatActivity implements ActionListener {
+public class MainActivity extends AppCompatActivity  {
 
 
     private FileAdapter fileAdapter;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements ActionListener {
                 });
         setUpViews();
         final FetchConfiguration fetchConfiguration = new FetchConfiguration.Builder(this)
-                .setDownloadConcurrentLimit(3)
+                .setDownloadConcurrentLimit(5)
                 .setHttpDownloader(new OkHttpDownloader(Downloader.FileDownloaderType.PARALLEL))
                 .setNamespace(FETCH_NAMESPACE)
                 .enableAutoStart(true)
@@ -127,35 +127,6 @@ public class MainActivity extends AppCompatActivity implements ActionListener {
             }
         }).addListener(fetchListener);
     }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        fetch.removeListener(fetchListener);
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        fetch.close();
-    }
-    @Override
-    public void onPauseDownload(int id) {
-
-    }
-
-    @Override
-    public void onResumeDownload(int id) {
-
-    }
-
-    @Override
-    public void onRemoveDownload(int id) {
-
-    }
-
-    @Override
-    public void onRetryDownload(int id) {
-
-    }
 
     private void checkStoragePermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -176,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements ActionListener {
         }
     }
     private void enqueueDownloads() {
-        final List<Request> requests = Data.getFetchRequestWithGroupId(GROUP_ID);
+        final List<Request> requests = RequestBuilder.getFetchRequestWithGroupId(GROUP_ID);
 
 
         fetch.enqueue(requests, new Func<List<Pair<Request, Error>>>() {

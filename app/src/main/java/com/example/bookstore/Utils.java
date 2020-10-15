@@ -7,17 +7,10 @@ import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
-import com.google.firebase.storage.StorageReference;
 import com.tonyodev.fetch2.Status;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
-
 public final class Utils {
 
     private Utils() {
