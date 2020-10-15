@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BookStore</string>
+    <string name="app_name">Parallel App Downloader</string>
     <string name="download_eta_sec">%1$ds left</string>
     <string name="download_eta_min">%1$dm %2$ds left</string>
     <string name="download_eta_hrs">%1$dh %2$dm %3$ds left</string>
