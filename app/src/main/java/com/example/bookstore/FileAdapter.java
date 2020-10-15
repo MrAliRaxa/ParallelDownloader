@@ -56,7 +56,7 @@ public final class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHold
         final Context context = holder.itemView.getContext();
 
         holder.titleTextView.setText(uri.getLastPathSegment());
-        holder.statusTextView.setText(getStatusString(status));
+        holder.statusTextView.setText(Utils.getStatusString(status));
 
         int progress = downloadData.download.getProgress();
         if (progress == -1) { // Download progress is undermined at the moment.
@@ -146,26 +146,6 @@ public final class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHold
         }
     }
 
-    private String getStatusString(Status status) {
-        switch (status) {
-            case COMPLETED:
-                return "Done";
-            case DOWNLOADING:
-                return "Downloading";
-            case FAILED:
-                return "Error";
-            case PAUSED:
-                return "Paused";
-            case QUEUED:
-                return "Waiting in Queue";
-            case REMOVED:
-                return "Removed";
-            case NONE:
-                return "Not Queued";
-            default:
-                return "Unknown";
-        }
-    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -181,7 +161,6 @@ public final class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHold
             titleTextView = itemView.findViewById(R.id.titleTextView);
             statusTextView = itemView.findViewById(R.id.status_TextView);
             progressBar = itemView.findViewById(R.id.progressBar);
-
             progressTextView = itemView.findViewById(R.id.progress_TextView);
             timeRemainingTextView = itemView.findViewById(R.id.remaining_TextView);
             downloadedBytesPerSecondTextView = itemView.findViewById(R.id.downloadSpeedTextView);

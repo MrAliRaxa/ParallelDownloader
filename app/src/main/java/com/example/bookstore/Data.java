@@ -44,11 +44,6 @@ public final class Data {
             requests.add(request);
         }
         return requests;
-    }    @NonNull
-    public static Request getFetchRequests(String url) {
-            final Request request = new Request(url, getFilePath(url));
-
-        return request;
     }
 
     @NonNull
@@ -72,7 +67,7 @@ public final class Data {
 
     @NonNull
     public static String getSaveDir() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/BookStore";
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ParallelDownloader";
     }
 
 }

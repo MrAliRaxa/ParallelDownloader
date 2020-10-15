@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
+import com.tonyodev.fetch2.Status;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,10 +24,6 @@ public final class Utils {
 
     }
 
-    public static void getAllFiles(OnAllFilesLoadListeners onAllFilesLoadListeners){
-
-
-    }
     @NonNull
     public static String getMimeType(@NonNull final Context context, @NonNull final Uri uri) {
         final ContentResolver cR = context.getContentResolver();
@@ -102,6 +99,26 @@ public final class Utils {
             return 100;
         } else {
             return (int) (((double) downloaded / (double) total) * 100);
+        }
+    }
+    public static String getStatusString(Status status) {
+        switch (status) {
+            case COMPLETED:
+                return "Done";
+            case DOWNLOADING:
+                return "Downloading";
+            case FAILED:
+                return "Error";
+            case PAUSED:
+                return "Paused";
+            case QUEUED:
+                return "Waiting in Queue";
+            case REMOVED:
+                return "Removed";
+            case NONE:
+                return "Not Queued";
+            default:
+                return "Unknown";
         }
     }
 
