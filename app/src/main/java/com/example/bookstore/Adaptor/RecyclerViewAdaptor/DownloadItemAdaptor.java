@@ -1,4 +1,4 @@
-package com.example.bookstore;
+package com.example.bookstore.Adaptor.RecyclerViewAdaptor;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,6 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bookstore.DownloadItemModel;
+import com.example.bookstore.R;
+import com.example.bookstore.Utils;
 import com.example.bookstore.databinding.DownloadRowBinding;
 import com.tonyodev.fetch2.Download;
 import com.tonyodev.fetch2.Status;
@@ -18,7 +21,7 @@ import com.tonyodev.fetch2.Status;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
+public final class DownloadItemAdaptor extends RecyclerView.Adapter<DownloadItemAdaptor.ViewHolder> {
 
     @NonNull
     private final List<DownloadData> downloads = new ArrayList<>();
@@ -26,14 +29,14 @@ public final class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHold
 
     private Context context;
 
-    FileAdapter(Context context) {
+    public DownloadItemAdaptor(Context context) {
         this.context=context;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
 
-        DownloadRowBinding downloadRowBinding= DataBindingUtil.inflate(LayoutInflater.from(context),R.layout.download_row,null,false);
+        DownloadRowBinding downloadRowBinding= DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.download_row,null,false);
 
         return new ViewHolder(downloadRowBinding);
     }
@@ -48,37 +51,20 @@ public final class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHold
         }
         final Uri uri = Uri.parse(url);
         final Status status = downloadData.download.getStatus();
-        DownloadItem downloadItem=new DownloadItem();
-        downloadItem.setItemName(uri.getLastPathSegment());
-        downloadItem.setDownloadStatus(Utils.getStatusString(status));
+        DownloadItemModel downloadItemModel =new DownloadItemModel();
+        downloadItemModel.setItemName(uri.getLastPathSegment());
+        downloadItemModel.setDownloadStatus(Utils.getStatusString(status));
 
 
         int progress = downloadData.download.getProgress();
         if (progress == -1) { // Download progress is undermined at the moment.
             progress = 0;
         }
-        downloadItem.setDownloadProgress(String.valueOf(progress));
-        downloadItem.setRemainingTime(Utils.getETAString(context,downloadData.eta));
-        downloadItem.setNetworkSpeed(Utils.getDownloadSpeedString(context,downloadData.downloadedBytesPerSecond));
-        holder.downloadRowBinding.setDownloadItem(downloadItem);
+        downloadItemModel.setDownloadProgress(String.valueOf(progress));
+        downloadItemModel.setRemainingTime(Utils.getETAString(context,downloadData.eta));
+        downloadItemModel.setNetworkSpeed(Utils.getDownloadSpeedString(context,downloadData.downloadedBytesPerSecond));
+        holder.downloadRowBinding.setDownloadItemModel(downloadItemModel);
         holder.downloadRowBinding.progressBar.setProgress(progress);
-//        holder.titleTextView.setText(uri.getLastPathSegment());
-//        holder.statusTextView.setText(Utils.getStatusString(status));
-
-//        holder.progressBar.setProgress(progress);
-//        holder.progressTextView.setText(context.getString(R.string.percent_progress, progress));
-//
-//        if (downloadData.eta == -1) {
-//            holder.timeRemainingTextView.setText("");
-//        } else {
-//            holder.timeRemainingTextView.setText(Utils.getETAString(context, downloadData.eta));
-//        }
-//
-//        if (downloadData.downloadedBytesPerSecond == 0) {
-//            holder.downloadedBytesPerSecondTextView.setText("");
-//        } else {
-//            holder.downloadedBytesPerSecondTextView.setText(Utils.getDownloadSpeedString(context, downloadData.downloadedBytesPerSecond));
-//        }
 
 
     }
@@ -137,25 +123,13 @@ public final class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-//        public final TextView titleTextView;
-//        final TextView statusTextView;
-//        public final ProgressBar progressBar;
-//        public final TextView progressTextView;
-//        final TextView timeRemainingTextView;
-//        final TextView downloadedBytesPerSecondTextView;
-
         DownloadRowBinding downloadRowBinding;
 
         ViewHolder(DownloadRowBinding downloadRowBinding) {
             super(downloadRowBinding.getRoot());
 
             this.downloadRowBinding=downloadRowBinding;
-//            titleTextView = itemView.findViewById(R.id.titleTextView);
-//            statusTextView = itemView.findViewById(R.id.status_TextView);
-//            progressBar = itemView.findViewById(R.id.progressBar);
-//            progressTextView = itemView.findViewById(R.id.progress_TextView);
-//            timeRemainingTextView = itemView.findViewById(R.id.remaining_TextView);
-//            downloadedBytesPerSecondTextView = itemView.findViewById(R.id.downloadSpeedTextView);
+
         }
 
     }

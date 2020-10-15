@@ -1,6 +1,6 @@
 package com.example.bookstore;
 
-public class DownloadItem {
+public class DownloadItemModel {
     private String itemName;
     private String downloadStatus;
     private String downloadProgress;
@@ -8,7 +8,7 @@ public class DownloadItem {
     private String networkSpeed;
 
 
-    public DownloadItem() {
+    public DownloadItemModel() {
     }
 
     public String getItemName() {

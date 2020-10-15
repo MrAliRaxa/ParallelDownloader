@@ -2,12 +2,10 @@ package com.example.bookstore;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.DownloadManager;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +14,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.bookstore.Adaptor.RecyclerViewAdaptor.DownloadItemAdaptor;
+import com.example.bookstore.Controller.RequestBuilder;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -52,7 +52,7 @@ import kotlin.Pair;
 public class MainActivity extends AppCompatActivity  {
 
 
-    private FileAdapter fileAdapter;
+    private DownloadItemAdaptor downloadItemAdaptor;
     private Fetch fetch;
     private static final int STORAGE_PERMISSION_CODE = 200;
     private static final long UNKNOWN_REMAINING_TIME = -1;
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity  {
                         }
                     }
                 });
-        setUpViews();
+        setRecyclerView();
         final FetchConfiguration fetchConfiguration = new FetchConfiguration.Builder(this)
                 .setDownloadConcurrentLimit(5)
                 .setHttpDownloader(new OkHttpDownloader(Downloader.FileDownloaderType.PARALLEL))
@@ -105,12 +105,12 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-    private void setUpViews() {
+    private void setRecyclerView() {
 
         final RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        fileAdapter = new FileAdapter(this);
-        recyclerView.setAdapter(fileAdapter);
+        downloadItemAdaptor = new DownloadItemAdaptor(this);
+        recyclerView.setAdapter(downloadItemAdaptor);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity  {
                 final ArrayList<Download> list = new ArrayList<>(result);
                 Collections.sort(list, (first, second) -> Long.compare(first.getCreated(), second.getCreated()));
                 for (Download download : list) {
-                    fileAdapter.addDownload(download);
+                    downloadItemAdaptor.addDownload(download);
                 }
             }
         }).addListener(fetchListener);
@@ -162,17 +162,17 @@ public class MainActivity extends AppCompatActivity  {
     private final FetchListener fetchListener = new AbstractFetchListener() {
         @Override
         public void onAdded(@NotNull Download download) {
-            fileAdapter.addDownload(download);
+            downloadItemAdaptor.addDownload(download);
         }
 
         @Override
         public void onQueued(@NotNull Download download, boolean waitingOnNetwork) {
-            fileAdapter.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
+            downloadItemAdaptor.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
         }
 
         @Override
         public void onCompleted(@NotNull Download download) {
-            fileAdapter.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
+            downloadItemAdaptor.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
         }
 
         @Override
@@ -180,37 +180,37 @@ public class MainActivity extends AppCompatActivity  {
             super.onError(download, error, throwable);
             Log.d(TAG, "onError: "+error.getHttpResponse().getErrorResponse());
             Log.d(TAG, "onError: "+throwable.getMessage());
-            fileAdapter.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
+            downloadItemAdaptor.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
         }
 
         @Override
         public void onProgress(@NotNull Download download, long etaInMilliseconds, long downloadedBytesPerSecond) {
-            fileAdapter.update(download, etaInMilliseconds, downloadedBytesPerSecond);
+            downloadItemAdaptor.update(download, etaInMilliseconds, downloadedBytesPerSecond);
         }
 
         @Override
         public void onPaused(@NotNull Download download) {
-            fileAdapter.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
+            downloadItemAdaptor.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
         }
 
         @Override
         public void onResumed(@NotNull Download download) {
-            fileAdapter.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
+            downloadItemAdaptor.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
         }
 
         @Override
         public void onCancelled(@NotNull Download download) {
-            fileAdapter.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
+            downloadItemAdaptor.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
         }
 
         @Override
         public void onRemoved(@NotNull Download download) {
-            fileAdapter.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
+            downloadItemAdaptor.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
         }
 
         @Override
         public void onDeleted(@NotNull Download download) {
-            fileAdapter.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
+            downloadItemAdaptor.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
         }
     };
 }

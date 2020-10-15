@@ -4,8 +4,8 @@
 
     <data>
         <variable
-            name="downloadItem"
-            type="com.example.bookstore.DownloadItem" />
+            name="downloadItemModel"
+            type="com.example.bookstore.DownloadItemModel" />
     </data>
     <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,7 +37,7 @@
                     android:layout_marginTop="8dp"
                     android:textSize="17sp"
                     android:textStyle="bold"
-                    android:text="@{downloadItem.itemName}"
+                    android:text="@{downloadItemModel.itemName}"
                     />
                 <ProgressBar
                     android:id="@+id/progressBar"
@@ -65,7 +65,7 @@
                         android:layout_marginBottom="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
-                        android:text="@{downloadItem.downloadProgress+'%'}" />
+                        android:text="@{downloadItemModel.downloadProgress+'%'}" />
 
                     <TextView
                         android:id="@+id/downloadSpeedTextView"
@@ -76,7 +76,7 @@
                         android:layout_marginStart="8dp"
 
                         android:layout_alignParentEnd="true"
-                        android:text="@{downloadItem.networkSpeed}"
+                        android:text="@{downloadItemModel.networkSpeed}"
                         />
 
                 </RelativeLayout>
@@ -91,14 +91,14 @@
                         android:id="@+id/remaining_TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{downloadItem.remainingTime}" />
+                        android:text="@{downloadItemModel.remainingTime}" />
 
                     <TextView
                         android:id="@+id/status_TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="italic|bold"
-                        tools:text="@{downloadItem.downloadStatus}"
+                        tools:text="@{downloadItemModel.downloadStatus}"
                         android:layout_alignParentEnd="true"
                         />
                 </RelativeLayout>

@@ -1,9 +1,12 @@
-package com.example.bookstore;
+package com.example.bookstore.Controller;
 
 import android.net.Uri;
 import android.os.Environment;
 
 import androidx.annotation.NonNull;
+
+import java.io.File;
+import java.io.IOException;
 
 public class DirectoryBuilder {
 
@@ -21,4 +24,21 @@ public class DirectoryBuilder {
     public static String getSaveDir() {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ParallelDownloader";
     }
+    @NonNull
+    public static File createFile(String filePath) {
+        final File file = new File(filePath);
+        if (!file.exists()) {
+            final File parent = file.getParentFile();
+            if (!parent.exists()) {
+                parent.mkdirs();
+            }
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file;
+    }
+
 }
